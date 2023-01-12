@@ -13,8 +13,8 @@ const NewQuiz = () => {
   return (
     <div className='pick-level-container flex flex-col justify-start items-center gap-12'>
         <div className='flex flex-col justify-start items-start w-10/12 gap-2'>
-            <h2 className='text-blue-500 text-lg font-medium'>Hi, user!</h2>
-            <h1 className='text-gray-500 text-3xl font-semibold'>What shall we play?</h1>
+            <h1 className='text-blue-500 text-3xl font-semibold'>Ranked Quiz</h1>
+            <h2 className='text-gray-500 text-lg font-medium'>Choose a difficulty:</h2>
         </div>
 
         <div className='flex flex-col justify-start items-center w-full gap-6 mb-24'>

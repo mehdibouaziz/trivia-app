@@ -12,7 +12,7 @@ const HeaderNav = () => {
     <div className='navbar mb-4 pt-8 px-6 box-border'>
         <div className='flex-1'>
             {location.pathname !== '/' &&
-            <button className="btn btn-ghost btn-circle text-blue-500 text-3xl" onClick={() => navigate(-1)} >
+            <button className="btn btn-ghost btn-circle text-blue-500 text-3xl" onClick={() => navigate('/')} >
                 <FaChevronLeft />
             </button>
             }
@@ -21,7 +21,7 @@ const HeaderNav = () => {
             <Link className="btn btn-ghost btn-circle text-blue-500 text-3xl">
                 <FaTrophy />
             </Link>
-            <Link className="btn btn-ghost btn-circle text-blue-500 text-3xl">
+            <Link to='/profile' className="btn btn-ghost btn-circle text-blue-500 text-3xl">
                 <FaUserAstronaut />
             </Link>
         </div>
