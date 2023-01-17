@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import { getAuth, updateProfile } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 import { db } from '../../firebase.config'
-import { updateDoc } from "firebase/firestore"
+import { updateDoc, doc } from "firebase/firestore"
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPencilAlt } from 'react-icons/fa'
 import avatarDefault from '../../assets/avatars/000-unknown.png'
+import { toast } from "react-toastify"
 
 
 const Profile = () => {
@@ -20,6 +21,33 @@ const Profile = () => {
     const onLogout = () => {
         auth.signOut()
         navigate('/')
+    }
+    const onEdit = async (e) => {
+        e.preventDefault()
+        setEditMode(!editMode)
+        if(editMode){
+            try {
+                if(auth.currentUser.displayName !== name) {
+                    // update display name in firebase
+                    await updateProfile(auth.currentUser, {
+                        displayName: name
+                    })
+                    // update firestore users db
+                    const userRef = doc(db, 'users', auth.currentUser.uid)
+                    await updateDoc(userRef, {
+                        name
+                    })
+                }
+            } catch (error) {
+                toast.error('Could not update profile details')
+            }
+        }
+    }
+    const onChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.id]: e.target.value,
+        }))
     }
 
   return (
@@ -45,7 +73,11 @@ const Profile = () => {
                 id='name'
                 value={name}
                 disabled={!editMode}
+                onChange={onChange}
                 />
+                <button className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-blue-500 text-lg' disabled={editMode} onClick={() => setEditMode(!editMode)}>
+                    <FaPencilAlt />
+                </button>
             </div>
             <div className='emailInputDiv w-full relative'>
                 <div className='absolute top-4 left-3'>
@@ -57,10 +89,11 @@ const Profile = () => {
                 placeholder='Email'
                 id='email'
                 value={email}
-                disabled={!editMode}
+                disabled={true}
+                onChange={onChange}
                 />
             </div>
-            <button className="btn bg-blue-400 hover:bg-blue-500 border-none w-full">{editMode ? 'Update' : 'Edit info'}</button>
+            {editMode && <button className="btn bg-blue-400 hover:bg-blue-500 border-none w-full" onClick={onEdit}>Update</button>}
         </div>
         <div className='flex flex-col justify-start items-start w-10/12 gap-2'>
             <button onClick={onLogout} className="btn btn-error w-full">Logout</button>

@@ -7,6 +7,8 @@ import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Profile from "./pages/auth/Profile";
+import PrivateRoute from "./components/PrivateRoute";
+import UploadAvatars from "./pages/dev/UploadAvatars";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -28,7 +30,11 @@ function App() {
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile' element={<PrivateRoute />}>
+            <Route path='/profile' element={<Profile />} />
+          </Route>
+          <Route path='/avatars' element={<UploadAvatars />} />
+          
         </Routes>
       </Router>
     </div>
